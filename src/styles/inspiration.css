@@ -1,0 +1,723 @@
+/* ==========================================================================
+   Inspiration Visual Board Styles
+   Monochrome editorial aesthetics, Pinterest-style masonry, lightbox
+   ========================================================================== */
+
+/* ── Container & Header ─────────────────────────────────────────────── */
+.inspiration-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6, 24px);
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.inspiration-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: var(--space-4, 16px);
+  padding-bottom: var(--space-2, 8px);
+}
+
+.inspiration-header__title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.inspiration-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* ── Filter / Control Bar ────────────────────────────────────────────── */
+.inspiration-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md, 8px);
+}
+
+.inspiration-toolbar__left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 260px;
+}
+
+.inspiration-search {
+  position: relative;
+  flex: 1;
+  max-width: 380px;
+}
+
+.inspiration-search__icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-tertiary);
+  pointer-events: none;
+}
+
+.inspiration-search__input {
+  width: 100%;
+  height: 36px;
+  padding: 0 32px 0 34px;
+  font-size: var(--text-sm, 13px);
+  color: var(--text-primary);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm, 6px);
+  outline: none;
+  transition: border-color var(--transition-fast, 0.15s ease);
+}
+
+.inspiration-search__input:focus {
+  border-color: var(--accent);
+  background: var(--bg-white);
+}
+
+.inspiration-search__clear {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.inspiration-search__clear:hover {
+  color: var(--text-primary);
+}
+
+.inspiration-categories {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+  scrollbar-width: none;
+}
+
+.inspiration-categories::-webkit-scrollbar {
+  display: none;
+}
+
+.inspiration-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 28px;
+  padding: 0 12px;
+  font-size: var(--text-xs, 12px);
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--transition-fast, 0.15s ease);
+}
+
+.inspiration-chip:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.inspiration-chip--active {
+  background: var(--accent);
+  color: var(--text-inverse);
+  border-color: var(--accent);
+}
+
+.inspiration-chip--active:hover {
+  background: var(--accent-hover);
+  color: var(--text-inverse);
+}
+
+.inspiration-toolbar__right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.inspiration-col-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm, 6px);
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: var(--text-xs, 11px);
+  font-weight: 600;
+  transition: all var(--transition-fast, 0.15s ease);
+}
+
+.inspiration-col-btn:hover {
+  color: var(--text-primary);
+  border-color: var(--border-hover);
+}
+
+.inspiration-col-btn--active {
+  background: var(--accent);
+  color: var(--text-inverse);
+  border-color: var(--accent);
+}
+
+/* ── Upload Dropzone ─────────────────────────────────────────────────── */
+.inspiration-dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 32px 24px;
+  background: var(--bg-white);
+  border: 1.5px dashed var(--border-strong);
+  border-radius: var(--radius-md, 8px);
+  cursor: pointer;
+  transition: all var(--transition-base, 0.2s ease);
+  text-align: center;
+}
+
+.inspiration-dropzone:hover,
+.inspiration-dropzone--active {
+  border-color: var(--accent);
+  background: var(--accent-muted);
+  transform: translateY(-1px);
+}
+
+.inspiration-dropzone__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--bg-subtle);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  transition: transform var(--transition-fast, 0.15s ease);
+}
+
+.inspiration-dropzone:hover .inspiration-dropzone__icon {
+  transform: scale(1.06);
+}
+
+.inspiration-dropzone__title {
+  font-size: var(--text-sm, 14px);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.inspiration-dropzone__subtitle {
+  font-size: var(--text-xs, 12px);
+  color: var(--text-tertiary);
+}
+
+/* ── Pinterest-Style Masonry Grid ────────────────────────────────────── */
+.inspiration-masonry {
+  column-gap: 16px;
+  width: 100%;
+}
+
+.inspiration-masonry--cols-2 {
+  column-count: 2;
+}
+
+.inspiration-masonry--cols-3 {
+  column-count: 3;
+}
+
+.inspiration-masonry--cols-4 {
+  column-count: 4;
+}
+
+.inspiration-masonry--cols-auto {
+  column-count: 1;
+}
+
+@media (min-width: 640px) {
+  .inspiration-masonry--cols-auto {
+    column-count: 2;
+  }
+}
+
+@media (min-width: 960px) {
+  .inspiration-masonry--cols-auto {
+    column-count: 3;
+  }
+}
+
+@media (min-width: 1240px) {
+  .inspiration-masonry--cols-auto {
+    column-count: 4;
+  }
+}
+
+/* ── Image Card ──────────────────────────────────────────────────────── */
+.inspiration-card {
+  break-inside: avoid;
+  page-break-inside: avoid;
+  margin-bottom: 16px;
+  position: relative;
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md, 8px);
+  overflow: hidden;
+  transition: transform var(--transition-base, 0.2s cubic-bezier(0.16, 1, 0.3, 1)),
+              box-shadow var(--transition-base, 0.2s cubic-bezier(0.16, 1, 0.3, 1)),
+              border-color var(--transition-fast, 0.15s ease);
+  cursor: pointer;
+}
+
+.inspiration-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  border-color: var(--border-hover);
+}
+
+.inspiration-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.inspiration-card--pinned {
+  border-color: var(--text-secondary);
+}
+
+.inspiration-card__image-wrap {
+  position: relative;
+  width: 100%;
+  background: var(--bg-subtle);
+  overflow: hidden;
+  display: block;
+}
+
+.inspiration-card__img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  transition: transform var(--transition-base, 0.3s ease);
+}
+
+.inspiration-card:hover .inspiration-card__img {
+  transform: scale(1.02);
+}
+
+/* Overlay & Actions */
+.inspiration-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.55) 0%,
+    rgba(0, 0, 0, 0.05) 40%,
+    rgba(0, 0, 0, 0.7) 100%
+  );
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 12px;
+  transition: opacity var(--transition-fast, 0.2s ease);
+  pointer-events: none;
+}
+
+.inspiration-card:hover .inspiration-card__overlay,
+.inspiration-card:focus-within .inspiration-card__overlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.inspiration-card__top-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.inspiration-card__bottom-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 100%;
+}
+
+.inspiration-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  color: #111111;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-fast, 0.15s ease);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+}
+
+.inspiration-action-btn:hover {
+  background: #ffffff;
+  transform: scale(1.08);
+}
+
+.inspiration-action-btn--pinned {
+  background: #111111;
+  color: #ffffff;
+}
+
+.inspiration-action-btn--pinned:hover {
+  background: #2a2a2a;
+}
+
+.inspiration-card__pin-indicator {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+  background: rgba(17, 17, 17, 0.85);
+  color: #ffffff;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  backdrop-filter: blur(4px);
+}
+
+.inspiration-card__info {
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: var(--bg-white);
+  border-top: 1px solid var(--border);
+}
+
+.inspiration-card__title {
+  font-size: var(--text-sm, 13px);
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.inspiration-card__caption {
+  font-size: var(--text-xs, 12px);
+  color: var(--text-secondary);
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.inspiration-card__meta-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 2px;
+}
+
+.inspiration-card__badge {
+  font-size: 10px;
+  font-weight: 500;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: var(--bg-subtle);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ── Lightbox / Fullscreen Modal ─────────────────────────────────────── */
+.inspiration-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  background: rgba(0, 0, 0, 0.88);
+  backdrop-filter: blur(10px);
+  animation: fadeIn 0.18s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.inspiration-lightbox__main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+}
+
+.inspiration-lightbox__topbar {
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  color: #ffffff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.inspiration-lightbox__counter {
+  font-size: var(--text-xs, 12px);
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 0.05em;
+}
+
+.inspiration-lightbox__top-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.inspiration-lightbox__btn {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  height: 34px;
+  padding: 0 12px;
+  border-radius: var(--radius-sm, 6px);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--text-xs, 12px);
+  font-weight: 500;
+  transition: all var(--transition-fast, 0.15s ease);
+}
+
+.inspiration-lightbox__btn:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.inspiration-lightbox__viewport {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  position: relative;
+  user-select: none;
+  overflow: hidden;
+}
+
+.inspiration-lightbox__img {
+  max-width: 100%;
+  max-height: calc(100vh - 120px);
+  object-fit: contain;
+  border-radius: var(--radius-sm, 6px);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.6);
+  transition: transform 0.2s ease;
+}
+
+.inspiration-lightbox__nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast, 0.15s ease);
+  backdrop-filter: blur(8px);
+}
+
+.inspiration-lightbox__nav-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-50%) scale(1.08);
+}
+
+.inspiration-lightbox__nav-btn--prev {
+  left: 20px;
+}
+
+.inspiration-lightbox__nav-btn--next {
+  right: 20px;
+}
+
+/* Lightbox Sidebar / Detail Drawer */
+.inspiration-lightbox__sidebar {
+  width: 340px;
+  background: var(--bg-white);
+  border-left: 1px solid var(--border);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  gap: 20px;
+  overflow-y: auto;
+}
+
+.inspiration-lightbox__sidebar-title {
+  font-size: var(--text-base, 16px);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.inspiration-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.inspiration-label {
+  font-size: var(--text-xs, 12px);
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.inspiration-input {
+  width: 100%;
+  height: 36px;
+  padding: 0 12px;
+  font-size: var(--text-sm, 13px);
+  color: var(--text-primary);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm, 6px);
+  outline: none;
+  transition: border-color var(--transition-fast, 0.15s ease);
+}
+
+.inspiration-input:focus {
+  border-color: var(--accent);
+  background: var(--bg-white);
+}
+
+.inspiration-textarea {
+  width: 100%;
+  min-height: 80px;
+  padding: 10px 12px;
+  font-size: var(--text-sm, 13px);
+  color: var(--text-primary);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm, 6px);
+  outline: none;
+  resize: vertical;
+  font-family: inherit;
+  transition: border-color var(--transition-fast, 0.15s ease);
+}
+
+.inspiration-textarea:focus {
+  border-color: var(--accent);
+  background: var(--bg-white);
+}
+
+/* ── Today Dashboard Compact Preview Strip ───────────────────────────── */
+.inspiration-preview-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.inspiration-preview-strip {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding: 4px 2px 8px 2px;
+  scrollbar-width: thin;
+}
+
+.inspiration-preview-thumb {
+  flex: 0 0 140px;
+  height: 100px;
+  position: relative;
+  border-radius: var(--radius-sm, 6px);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  background: var(--bg-subtle);
+  cursor: pointer;
+  transition: transform var(--transition-fast, 0.15s ease),
+              box-shadow var(--transition-fast, 0.15s ease),
+              border-color var(--transition-fast, 0.15s ease);
+}
+
+.inspiration-preview-thumb:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-color: var(--accent);
+}
+
+.inspiration-preview-thumb__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.inspiration-preview-thumb__title {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 4px 6px;
+  font-size: 10px;
+  font-weight: 500;
+  color: #ffffff;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.75), transparent);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .inspiration-lightbox {
+    flex-direction: column;
+  }
+  .inspiration-lightbox__sidebar {
+    width: 100%;
+    height: 300px;
+    border-left: none;
+    border-top: 1px solid var(--border);
+  }
+  .inspiration-lightbox__img {
+    max-height: calc(100vh - 380px);
+  }
+}

@@ -1,0 +1,259 @@
+/* ==========================================================================
+   Design Tokens — Just Do It
+   Monochrome editorial system. Black, white, and gray only.
+   Inspired by Apple / Notion / Linear — but original.
+   ========================================================================== */
+
+:root {
+  /* ─────────────────────────────────────────────────────────────────────────
+     BACKGROUNDS
+  ───────────────────────────────────────────────────────────────────────── */
+  --bg:                  #F8F8F6;   /* app shell background */
+  --bg-white:            #FFFFFF;   /* card / panel surfaces */
+  --bg-hover:            rgba(0, 0, 0, 0.04);
+  --bg-active:           rgba(0, 0, 0, 0.07);
+  --bg-subtle:           #F2F2F0;   /* inset / secondary surface */
+
+  /* Component aliases (used by React components) */
+  --color-bg-primary:    #FFFFFF;
+  --color-bg-secondary:  #F2F2F0;
+  --color-bg-hover:      rgba(0, 0, 0, 0.04);
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     TYPOGRAPHY
+  ───────────────────────────────────────────────────────────────────────── */
+  --text-primary:        #111111;
+  --text-secondary:      #555555;
+  --text-tertiary:       #999999;
+  --text-disabled:       #C8C8C4;
+  --text-inverse:        #FFFFFF;
+
+  /* Component aliases */
+  --color-text-primary:  #111111;
+  --color-text-secondary:#555555;
+  --color-text-tertiary: #999999;
+  --color-text-inverse:  #FFFFFF;
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     BORDERS
+  ───────────────────────────────────────────────────────────────────────── */
+  --border:              #E4E4E0;
+  --border-hover:        #C8C8C4;
+  --border-focus:        #111111;
+  --border-strong:       #B0B0AB;
+
+  /* Component aliases */
+  --color-border-subtle: #E4E4E0;
+  --color-border:        #C8C8C4;
+  --color-border-strong: #B0B0AB;
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     ACCENT — monochrome: black is the accent
+  ───────────────────────────────────────────────────────────────────────── */
+  --accent:              #111111;
+  --accent-hover:        #2A2A2A;
+  --accent-subtle:       #F0F0EE;
+  --accent-muted:        rgba(0, 0, 0, 0.06);
+
+  /* Component aliases */
+  --color-accent:        #111111;
+  --color-accent-hover:  #2A2A2A;
+  --color-accent-subtle: #F0F0EE;
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     STATUS — all tonal gray tones, no saturated color
+  ───────────────────────────────────────────────────────────────────────── */
+  --status-green:        #4A7A4A;
+  --status-green-bg:     #EDEEED;
+  --status-amber:        #7A6040;
+  --status-amber-bg:     #F0EBE2;
+  --status-red:          #7A3A3A;
+  --status-red-bg:       #F0E8E8;
+  --status-purple:       #5A4A7A;
+  --status-purple-bg:    #ECEAF2;
+  --status-gray:         #707070;
+  --status-gray-bg:      #EFEFED;
+  --status-blue:         #3A5A7A;
+  --status-blue-bg:      #E8EDF2;
+
+  /* Component aliases */
+  --color-success:       #4A7A4A;
+  --color-success-bg:    #EDEEED;
+  --color-warning:       #7A6040;
+  --color-warning-bg:    #F0EBE2;
+  --color-danger:        #7A3A3A;
+  --color-danger-bg:     #F0E8E8;
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     SHADOWS — restrained, barely visible
+  ───────────────────────────────────────────────────────────────────────── */
+  --shadow-xs:    0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-sm:    0 1px 4px rgba(0, 0, 0, 0.07), 0 0 0 1px rgba(0, 0, 0, 0.03);
+  --shadow-md:    0 4px 12px rgba(0, 0, 0, 0.09), 0 0 0 1px rgba(0, 0, 0, 0.03);
+  --shadow-lg:    0 8px 28px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.03);
+  --shadow-modal: 0 20px 60px rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.05);
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     BORDER RADIUS
+  ───────────────────────────────────────────────────────────────────────── */
+  --r-xs:    2px;
+  --r-sm:    4px;
+  --r-md:    6px;
+  --r-lg:    8px;
+  --r-xl:    12px;
+  --r-pill:  9999px;
+
+  /* Component aliases */
+  --radius-xs:  2px;
+  --radius-sm:  4px;
+  --radius-md:  6px;
+  --radius-lg:  8px;
+  --radius-xl:  12px;
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     TYPOGRAPHY
+  ───────────────────────────────────────────────────────────────────────── */
+  --font-sans: "Inter", "SF Pro Text", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "SF Mono", "Cascadia Code", ui-monospace, monospace;
+
+  /* Scale */
+  --text-2xs:   10px;
+  --text-xs:    11px;
+  --text-sm:    12px;
+  --text-base:  14px;
+  --text-md:    15px;
+  --text-lg:    17px;
+  --text-xl:    20px;
+  --text-2xl:   24px;
+  --text-3xl:   32px;
+  --text-4xl:   42px;
+  --text-5xl:   56px;
+
+  /* Semantic type roles */
+  --type-display:   var(--text-4xl);
+  --type-title:     var(--text-2xl);
+  --type-heading:   var(--text-xl);
+  --type-body:      var(--text-base);
+  --type-caption:   var(--text-xs);
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     SPACING RHYTHM
+  ───────────────────────────────────────────────────────────────────────── */
+  --space-1:   4px;
+  --space-2:   8px;
+  --space-3:   12px;
+  --space-4:   16px;
+  --space-5:   20px;
+  --space-6:   24px;
+  --space-7:   32px;
+  --space-8:   40px;
+  --space-9:   56px;
+  --space-10:  72px;
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     TRANSITIONS
+  ───────────────────────────────────────────────────────────────────────── */
+  --ease:        cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-out:    cubic-bezier(0, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  --t-fast:      80ms;
+  --t-normal:    150ms;
+  --t-slow:      240ms;
+  --t-page:      200ms;
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     Z-INDEX SYSTEM
+  ───────────────────────────────────────────────────────────────────────── */
+  --z-base:          1;
+  --z-sticky:        10;
+  --z-header:        40;
+  --z-sidebar:       50;
+  --z-drawer:        60;
+  --z-dropdown:      70;
+  --z-modal:         100;
+  --z-toast:         150;
+  --z-tooltip:       200;
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     LAYOUT
+  ───────────────────────────────────────────────────────────────────────── */
+  --sidebar-w:       232px;
+  --header-h:        48px;
+  --content-max:     1400px;
+  --content-padding: 32px;
+  --mobile-nav-h:    58px;
+
+  /* Elevated surface */
+  --color-bg-elevated: #FFFFFF;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   DARK MODE — Restrained Monochrome with strict WCAG contrast
+───────────────────────────────────────────────────────────────────────────── */
+[data-theme="dark"] {
+  --bg:                  #121212;
+  --bg-white:            #1A1A1A;
+  --bg-hover:            rgba(255, 255, 255, 0.06);
+  --bg-active:           rgba(255, 255, 255, 0.10);
+  --bg-subtle:           #1F1F1F;
+
+  --color-bg-primary:    #1A1A1A;
+  --color-bg-secondary:  #1F1F1F;
+  --color-bg-elevated:   #242424;
+  --color-bg-hover:      rgba(255, 255, 255, 0.06);
+
+  --text-primary:        #F0F0F0;
+  --text-secondary:      #A0A0A0;
+  --text-tertiary:       #6E6E6E;
+  --text-disabled:       #424242;
+  --text-inverse:        #121212;
+
+  --color-text-primary:  #F0F0F0;
+  --color-text-secondary:#A0A0A0;
+  --color-text-tertiary: #6E6E6E;
+  --color-text-inverse:  #121212;
+
+  --border:              #2E2E2E;
+  --border-hover:        #404040;
+  --border-focus:        #F0F0F0;
+  --border-strong:       #555555;
+
+  --color-border-subtle: #2A2A2A;
+  --color-border:        #3A3A3A;
+  --color-border-strong: #555555;
+
+  --accent:              #F0F0F0;
+  --accent-hover:        #D0D0D0;
+  --accent-subtle:       rgba(255, 255, 255, 0.08);
+  --accent-muted:        rgba(255, 255, 255, 0.10);
+
+  --color-accent:        #F0F0F0;
+  --color-accent-hover:  #D0D0D0;
+  --color-accent-subtle: rgba(255, 255, 255, 0.08);
+
+  --status-green:        #78A878;
+  --status-green-bg:     rgba(120, 168, 120, 0.14);
+  --status-amber:        #B09570;
+  --status-amber-bg:     rgba(176, 149, 112, 0.14);
+  --status-red:          #B06868;
+  --status-red-bg:       rgba(176, 104, 104, 0.14);
+  --status-purple:       #8A7AA8;
+  --status-purple-bg:    rgba(138, 122, 168, 0.14);
+  --status-gray:         #808080;
+  --status-gray-bg:      rgba(128, 128, 128, 0.12);
+  --status-blue:         #6888A8;
+  --status-blue-bg:      rgba(104, 136, 168, 0.14);
+
+  --color-success:       #78A878;
+  --color-success-bg:    rgba(120, 168, 120, 0.14);
+  --color-warning:       #B09570;
+  --color-warning-bg:    rgba(176, 149, 112, 0.14);
+  --color-danger:        #B06868;
+  --color-danger-bg:     rgba(176, 104, 104, 0.14);
+
+  --shadow-xs:    0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-sm:    0 1px 4px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255,255,255,0.06);
+  --shadow-md:    0 4px 12px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255,255,255,0.06);
+  --shadow-lg:    0 8px 28px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255,255,255,0.06);
+  --shadow-modal: 0 20px 60px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255,255,255,0.08);
+}

@@ -1,0 +1,712 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum TaskPriority {
+  low
+  medium
+  high
+  urgent
+}
+
+enum TaskCategory {
+  academic
+  career
+  work
+  personal
+  health
+  finance
+  projects
+}
+
+enum HabitFrequency {
+  daily
+  weekdays
+  weekends
+  weekly
+  custom
+}
+
+enum HabitCategory {
+  wellness
+  mindset
+  productivity
+  fitness
+  learning
+  health
+}
+
+enum HabitTimeOfDay {
+  morning
+  afternoon
+  evening
+  anytime
+}
+
+enum SupplementTiming {
+  morning
+  noon
+  evening
+  bedtime
+  with_meal
+}
+
+enum SupplementFrequency {
+  daily
+  specific_days
+  as_needed
+}
+
+enum WorkoutType {
+  strength
+  cardio
+  hiit
+  mobility
+  sports
+  custom
+  recovery
+}
+
+enum SelfCareCategory {
+  skincare
+  haircare
+  hygiene
+  grooming
+  body
+  mental
+}
+
+enum RoutineFrequency {
+  daily
+  alternate
+  weekly
+  custom
+}
+
+enum RoutineTimeOfDay {
+  morning
+  evening
+  night
+  anytime
+}
+
+enum GoalCategory {
+  semester
+  monthly
+  subject
+  career
+  personal
+  habit
+}
+
+enum GoalStatus {
+  not_started
+  in_progress
+  completed
+  on_hold
+}
+
+enum SkillLevel {
+  beginner
+  intermediate
+  advanced
+  master
+}
+
+enum CareerProjectStatus {
+  planning
+  in_progress
+  completed
+}
+
+enum CareerResourceType {
+  article
+  book
+  video
+  tool
+  repo
+}
+
+enum ScheduleCategory {
+  work
+  academic
+  fitness
+  personal
+  wellness
+  hobby
+}
+
+model User {
+  id           String    @id @default(uuid()) @db.Uuid
+  email        String    @unique @db.VarChar(320)
+  passwordHash String    @map("password_hash") @db.VarChar(100)
+  createdAt    DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt    DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+  profile      Profile?
+  sessions     Session[]
+  tasks        Task[]
+  habits       Habit[]
+  waterLogs    WaterLog[]
+  supplements  Supplement[]
+  workouts     WorkoutSession[]
+  routines     SelfCareRoutine[]
+  subjects     AcademicSubject[]
+  roadmaps     CareerRoadmap[]
+  goals        Goal[]
+  hobbies      Hobby[]
+  schedule     ScheduleItem[]
+  inspiration  InspirationImage[]
+
+  @@map("users")
+}
+
+model Profile {
+  userId          String   @id @map("user_id") @db.Uuid
+  name            String   @db.VarChar(120)
+  title           String   @default("") @db.VarChar(160)
+  dailyFocus      String   @default("") @map("daily_focus") @db.VarChar(500)
+  semester        String?  @db.VarChar(120)
+  wakeTime        String?  @map("wake_time") @db.VarChar(5)
+  sleepTime       String?  @map("sleep_time") @db.VarChar(5)
+  avatarInitials  String   @default("") @map("avatar_initials") @db.VarChar(4)
+  avatarColor     String?  @map("avatar_color") @db.VarChar(20)
+  waterTargetMl   Int      @default(2500) @map("water_target_ml")
+  onboarded       Boolean  @default(false)
+  onboardingData  Json?    @map("onboarding_data")
+  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt       DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("profiles")
+}
+
+model Session {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  tokenHash String   @unique @map("token_hash") @db.Char(64)
+  expiresAt DateTime @map("expires_at") @db.Timestamptz(3)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, expiresAt])
+  @@index([expiresAt])
+  @@map("sessions")
+}
+
+model Task {
+  id          String        @id @default(uuid()) @db.Uuid
+  userId      String        @map("user_id") @db.Uuid
+  title       String        @db.VarChar(240)
+  description String?       @db.Text
+  priority    TaskPriority  @default(medium)
+  dueDate     DateTime?     @map("due_date") @db.Date
+  dueTime     String?       @map("due_time") @db.VarChar(5)
+  endTime     String?       @map("end_time") @db.VarChar(5)
+  completed   Boolean       @default(false)
+  completedAt DateTime?     @map("completed_at") @db.Timestamptz(3)
+  category    TaskCategory  @default(personal)
+  tags        String[]      @default([])
+  notes       String?       @db.Text
+  recurring   String?       @db.VarChar(16)
+  reminder    Boolean      @default(false)
+  createdAt   DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt   DateTime     @updatedAt @map("updated_at") @db.Timestamptz(3)
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subtasks    TaskSubtask[]
+
+  @@index([userId, dueDate, completed])
+  @@index([userId, createdAt])
+  @@map("tasks")
+}
+
+model TaskSubtask {
+  id        String   @id @default(uuid()) @db.Uuid
+  taskId    String   @map("task_id") @db.Uuid
+  title     String   @db.VarChar(240)
+  completed Boolean  @default(false)
+  position  Int      @default(0)
+  task      Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  @@index([taskId, position])
+  @@map("task_subtasks")
+}
+
+model Habit {
+  id            String          @id @default(uuid()) @db.Uuid
+  userId        String          @map("user_id") @db.Uuid
+  title         String          @db.VarChar(160)
+  icon          String?         @db.VarChar(80)
+  description   String?         @db.Text
+  frequency     HabitFrequency  @default(daily)
+  selectedDays  Int[]           @default([]) @map("selected_days")
+  targetPerDay  Int             @default(1) @map("target_per_day")
+  targetUnit    String?         @map("target_unit") @db.VarChar(40)
+  category      HabitCategory   @default(wellness)
+  timeOfDay     HabitTimeOfDay? @map("time_of_day")
+  color         String?         @db.VarChar(40)
+  archived      Boolean         @default(false)
+  reminderTime  String?         @map("reminder_time") @db.VarChar(5)
+  bestStreak    Int             @default(0) @map("best_streak")
+  createdAt     DateTime        @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt     DateTime        @updatedAt @map("updated_at") @db.Timestamptz(3)
+  user          User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  completions   HabitCompletion[]
+
+  @@index([userId, archived])
+  @@map("habits")
+}
+
+model HabitCompletion {
+  id          String   @id @default(uuid()) @db.Uuid
+  habitId     String   @map("habit_id") @db.Uuid
+  completedOn DateTime @map("completed_on") @db.Date
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  habit       Habit    @relation(fields: [habitId], references: [id], onDelete: Cascade)
+
+  @@unique([habitId, completedOn])
+  @@index([completedOn])
+  @@map("habit_completions")
+}
+
+model WaterLog {
+  id        String           @id @default(uuid()) @db.Uuid
+  userId    String           @map("user_id") @db.Uuid
+  date      DateTime         @db.Date
+  targetMl  Int              @default(2500) @map("target_ml")
+  createdAt DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime         @updatedAt @map("updated_at") @db.Timestamptz(3)
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  entries   WaterLogEntry[]
+
+  @@unique([userId, date])
+  @@index([userId, date])
+  @@map("water_logs")
+}
+
+model WaterLogEntry {
+  id          String   @id @default(uuid()) @db.Uuid
+  waterLogId  String   @map("water_log_id") @db.Uuid
+  amountMl    Int       @map("amount_ml")
+  timestamp   DateTime  @default(now()) @db.Timestamptz(3)
+  containerName String? @map("container_name") @db.VarChar(100)
+  waterLog    WaterLog  @relation(fields: [waterLogId], references: [id], onDelete: Cascade)
+
+  @@index([waterLogId, timestamp])
+  @@map("water_log_entries")
+}
+
+model Supplement {
+  id           String               @id @default(uuid()) @db.Uuid
+  userId       String               @map("user_id") @db.Uuid
+  name         String               @db.VarChar(160)
+  dosage       String               @db.VarChar(80)
+  unit         String               @db.VarChar(40)
+  timing       SupplementTiming
+  frequency    SupplementFrequency  @default(daily)
+  selectedDays Int[]                @default([]) @map("selected_days")
+  notes        String?              @db.Text
+  reminder     Boolean              @default(false)
+  reminderTime String?              @map("reminder_time") @db.VarChar(5)
+  category     String?              @db.VarChar(40)
+  createdAt    DateTime             @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt    DateTime             @updatedAt @map("updated_at") @db.Timestamptz(3)
+  user         User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  completions  SupplementCompletion[]
+
+  @@index([userId, name])
+  @@map("supplements")
+}
+
+model SupplementCompletion {
+  id             String     @id @default(uuid()) @db.Uuid
+  supplementId   String     @map("supplement_id") @db.Uuid
+  completedOn    DateTime   @map("completed_on") @db.Date
+  createdAt      DateTime   @default(now()) @map("created_at") @db.Timestamptz(3)
+  supplement     Supplement @relation(fields: [supplementId], references: [id], onDelete: Cascade)
+
+  @@unique([supplementId, completedOn])
+  @@index([completedOn])
+  @@map("supplement_completions")
+}
+
+model WorkoutSession {
+  id              String      @id @default(uuid()) @db.Uuid
+  userId          String      @map("user_id") @db.Uuid
+  date            DateTime    @db.Date
+  scheduledDate   DateTime?   @map("scheduled_date") @db.Date
+  title           String      @db.VarChar(160)
+  workoutType     WorkoutType @map("workout_type")
+  muscleGroups    String[]    @default([]) @map("muscle_groups")
+  durationMinutes Int         @default(0) @map("duration_minutes")
+  rating          Int         @default(3)
+  energyLevel     Int?        @map("energy_level")
+  difficulty      Int?
+  reflection      String?     @db.Text
+  notes           String?     @db.Text
+  isTemplate      Boolean     @default(false) @map("is_template")
+  templateName    String?     @map("template_name") @db.VarChar(160)
+  activityType    String?     @map("activity_type") @db.VarChar(40)
+  distance        Float?
+  sportActivity   String?     @map("sport_activity") @db.VarChar(100)
+  completed       Boolean     @default(false)
+  createdAt       DateTime    @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt       DateTime    @updatedAt @map("updated_at") @db.Timestamptz(3)
+  user            User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  exercises       Exercise[]
+
+  @@index([userId, date])
+  @@index([userId, isTemplate])
+  @@map("workout_sessions")
+}
+
+model Exercise {
+  id              String         @id @default(uuid()) @db.Uuid
+  sessionId       String         @map("session_id") @db.Uuid
+  name            String         @db.VarChar(160)
+  targetMuscle    String         @map("target_muscle") @db.VarChar(100)
+  notes           String?        @db.Text
+  position        Int            @default(0)
+  session         WorkoutSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  sets            ExerciseSet[]
+
+  @@index([sessionId, position])
+  @@map("exercises")
+}
+
+model ExerciseSet {
+  id          String   @id @default(uuid()) @db.Uuid
+  exerciseId  String   @map("exercise_id") @db.Uuid
+  setNumber   Int      @map("set_number")
+  reps        Int      @default(0)
+  weightKg    Float    @default(0) @map("weight_kg")
+  completed   Boolean  @default(false)
+  exercise    Exercise @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+
+  @@unique([exerciseId, setNumber])
+  @@map("exercise_sets")
+}
+
+model SelfCareRoutine {
+  id          String             @id @default(uuid()) @db.Uuid
+  userId      String             @map("user_id") @db.Uuid
+  title       String             @db.VarChar(160)
+  category    SelfCareCategory
+  frequency   RoutineFrequency
+  selectedDays Int[]             @default([]) @map("selected_days")
+  timeOfDay   RoutineTimeOfDay   @map("time_of_day")
+  description String?            @db.Text
+  createdAt   DateTime           @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt   DateTime           @updatedAt @map("updated_at") @db.Timestamptz(3)
+  user        User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  completions SelfCareCompletion[]
+
+  @@index([userId, category])
+  @@map("self_care_routines")
+}
+
+model SelfCareCompletion {
+  id          String          @id @default(uuid()) @db.Uuid
+  routineId   String          @map("routine_id") @db.Uuid
+  completedOn DateTime        @map("completed_on") @db.Date
+  createdAt   DateTime        @default(now()) @map("created_at") @db.Timestamptz(3)
+  routine     SelfCareRoutine @relation(fields: [routineId], references: [id], onDelete: Cascade)
+
+  @@unique([routineId, completedOn])
+  @@map("self_care_completions")
+}
+
+model AcademicSubject {
+  id        String         @id @default(uuid()) @db.Uuid
+  userId    String         @map("user_id") @db.Uuid
+  code      String         @db.VarChar(40)
+  name      String         @db.VarChar(160)
+  professor String?        @db.VarChar(160)
+  semester  String         @db.VarChar(120)
+  color     String?        @db.VarChar(40)
+  notes     String?        @db.Text
+  goals     String[]       @default([])
+  createdAt DateTime       @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime       @updatedAt @map("updated_at") @db.Timestamptz(3)
+  user      User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lectureSheets LectureSheet[]
+  labSheets LabSheet[]
+  assignments Assignment[]
+  exams AcademicExam[]
+
+  @@unique([userId, code])
+  @@index([userId, semester])
+  @@map("academic_subjects")
+}
+
+model LectureSheet {
+  id            String         @id @default(uuid()) @db.Uuid
+  subjectId     String         @map("subject_id") @db.Uuid
+  number        Int
+  title         String         @db.VarChar(240)
+  completed     Boolean        @default(false)
+  notes         String?        @db.Text
+  completedDate DateTime?      @map("completed_date") @db.Date
+  subject       AcademicSubject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+
+  @@unique([subjectId, number])
+  @@map("lecture_sheets")
+}
+
+model LabSheet {
+  id            String         @id @default(uuid()) @db.Uuid
+  subjectId     String         @map("subject_id") @db.Uuid
+  number        Int
+  title         String         @db.VarChar(240)
+  completed     Boolean        @default(false)
+  notes         String?        @db.Text
+  completedDate DateTime?      @map("completed_date") @db.Date
+  subject       AcademicSubject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+
+  @@unique([subjectId, number])
+  @@map("lab_sheets")
+}
+
+model Assignment {
+  id              String         @id @default(uuid()) @db.Uuid
+  subjectId       String         @map("subject_id") @db.Uuid
+  title           String         @db.VarChar(240)
+  dueDate         DateTime       @map("due_date") @db.Date
+  completed       Boolean        @default(false)
+  weightPercentage Float?
+  notes           String?        @db.Text
+  subject         AcademicSubject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+
+  @@index([subjectId, dueDate])
+  @@map("assignments")
+}
+
+model AcademicExam {
+  id               String         @id @default(uuid()) @db.Uuid
+  subjectId        String         @map("subject_id") @db.Uuid
+  title            String         @db.VarChar(240)
+  date             DateTime       @db.Date
+  time             String?        @db.VarChar(5)
+  location         String?        @db.VarChar(160)
+  syllabusCovered  String?        @map("syllabus_covered") @db.Text
+  weightPercentage Float?         @map("weight_percentage")
+  completed        Boolean        @default(false)
+  subject          AcademicSubject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+
+  @@index([subjectId, date])
+  @@map("academic_exams")
+}
+
+model CareerRoadmap {
+  id          String           @id @default(uuid()) @db.Uuid
+  userId      String           @map("user_id") @db.Uuid
+  title       String           @db.VarChar(180)
+  targetRole  String           @map("target_role") @db.VarChar(180)
+  description String?          @db.Text
+  createdAt   DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt   DateTime         @updatedAt @map("updated_at") @db.Timestamptz(3)
+  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skills      CareerSkill[]
+  courses     CareerCourse[]
+  projects    CareerProject[]
+  milestones  CareerMilestone[]
+  resources   CareerResource[]
+
+  @@index([userId, createdAt])
+  @@map("career_roadmaps")
+}
+
+model CareerSkill {
+  id                 String       @id @default(uuid()) @db.Uuid
+  roadmapId          String       @map("roadmap_id") @db.Uuid
+  name               String       @db.VarChar(160)
+  level              SkillLevel
+  progressPercentage Int          @default(0) @map("progress_percentage")
+  notes              String?      @db.Text
+  roadmap            CareerRoadmap @relation(fields: [roadmapId], references: [id], onDelete: Cascade)
+
+  @@unique([roadmapId, name])
+  @@map("career_skills")
+}
+
+model CareerCourse {
+  id                 String        @id @default(uuid()) @db.Uuid
+  roadmapId          String        @map("roadmap_id") @db.Uuid
+  title              String        @db.VarChar(240)
+  platform           String        @db.VarChar(120)
+  progressPercentage Int           @default(0) @map("progress_percentage")
+  url                String?       @db.Text
+  completed          Boolean       @default(false)
+  roadmap            CareerRoadmap @relation(fields: [roadmapId], references: [id], onDelete: Cascade)
+
+  @@map("career_courses")
+}
+
+model CareerProject {
+  id          String              @id @default(uuid()) @db.Uuid
+  roadmapId   String              @map("roadmap_id") @db.Uuid
+  title       String              @db.VarChar(200)
+  description String              @db.Text
+  techStack   String[]            @default([]) @map("tech_stack")
+  githubUrl   String?             @map("github_url") @db.Text
+  liveUrl     String?             @map("live_url") @db.Text
+  status      CareerProjectStatus @default(planning)
+  roadmap     CareerRoadmap       @relation(fields: [roadmapId], references: [id], onDelete: Cascade)
+  milestones  CareerProjectMilestone[]
+
+  @@map("career_projects")
+}
+
+model CareerProjectMilestone {
+  id        String        @id @default(uuid()) @db.Uuid
+  projectId String        @map("project_id") @db.Uuid
+  title     String        @db.VarChar(240)
+  completed Boolean       @default(false)
+  position  Int           @default(0)
+  project   CareerProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId, position])
+  @@map("career_project_milestones")
+}
+
+model CareerMilestone {
+  id        String        @id @default(uuid()) @db.Uuid
+  roadmapId String        @map("roadmap_id") @db.Uuid
+  title     String        @db.VarChar(240)
+  targetDate DateTime?    @map("target_date") @db.Date
+  completed Boolean       @default(false)
+  roadmap   CareerRoadmap @relation(fields: [roadmapId], references: [id], onDelete: Cascade)
+
+  @@map("career_milestones")
+}
+
+model CareerResource {
+  id        String            @id @default(uuid()) @db.Uuid
+  roadmapId String            @map("roadmap_id") @db.Uuid
+  title     String            @db.VarChar(240)
+  type      CareerResourceType
+  url       String?           @db.Text
+  notes     String?           @db.Text
+  roadmap   CareerRoadmap     @relation(fields: [roadmapId], references: [id], onDelete: Cascade)
+
+  @@map("career_resources")
+}
+
+model Goal {
+  id                 String          @id @default(uuid()) @db.Uuid
+  userId             String          @map("user_id") @db.Uuid
+  title              String          @db.VarChar(200)
+  category           GoalCategory
+  targetDate         DateTime        @map("target_date") @db.Date
+  status             GoalStatus      @default(not_started)
+  progressPercentage Int             @default(0) @map("progress_percentage")
+  description        String?         @db.Text
+  notes              String?         @db.Text
+  createdAt          DateTime        @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt          DateTime        @updatedAt @map("updated_at") @db.Timestamptz(3)
+  user               User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  milestones         GoalMilestone[]
+  checklist          GoalChecklistItem[]
+
+  @@index([userId, status, targetDate])
+  @@map("goals")
+}
+
+model GoalMilestone {
+  id         String    @id @default(uuid()) @db.Uuid
+  goalId     String    @map("goal_id") @db.Uuid
+  title      String    @db.VarChar(240)
+  targetDate DateTime? @map("target_date") @db.Date
+  completed  Boolean   @default(false)
+  position   Int       @default(0)
+  goal       Goal      @relation(fields: [goalId], references: [id], onDelete: Cascade)
+
+  @@index([goalId, position])
+  @@map("goal_milestones")
+}
+
+model GoalChecklistItem {
+  id        String   @id @default(uuid()) @db.Uuid
+  goalId    String   @map("goal_id") @db.Uuid
+  title     String   @db.VarChar(240)
+  completed Boolean  @default(false)
+  position  Int      @default(0)
+  goal      Goal     @relation(fields: [goalId], references: [id], onDelete: Cascade)
+
+  @@index([goalId, position])
+  @@map("goal_checklist_items")
+}
+
+model Hobby {
+  id                  String         @id @default(uuid()) @db.Uuid
+  userId              String         @map("user_id") @db.Uuid
+  name                String         @db.VarChar(160)
+  category            String         @db.VarChar(80)
+  icon                String?        @db.VarChar(80)
+  targetFrequency     String         @map("target_frequency") @db.VarChar(100)
+  targetMinutesPerWeek Int           @default(0) @map("target_minutes_per_week")
+  notes               String?        @db.Text
+  createdAt           DateTime       @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt           DateTime       @updatedAt @map("updated_at") @db.Timestamptz(3)
+  user                User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sessions            HobbySession[]
+
+  @@index([userId, name])
+  @@map("hobbies")
+}
+
+model HobbySession {
+  id              String   @id @default(uuid()) @db.Uuid
+  hobbyId         String   @map("hobby_id") @db.Uuid
+  date            DateTime @db.Date
+  durationMinutes Int      @map("duration_minutes")
+  rating          Int
+  notes           String?  @db.Text
+  hobby           Hobby    @relation(fields: [hobbyId], references: [id], onDelete: Cascade)
+
+  @@index([hobbyId, date])
+  @@map("hobby_sessions")
+}
+
+model ScheduleItem {
+  id          String           @id @default(uuid()) @db.Uuid
+  userId      String           @map("user_id") @db.Uuid
+  date        DateTime         @db.Date
+  title       String           @db.VarChar(200)
+  startTime   String           @map("start_time") @db.VarChar(5)
+  endTime     String           @map("end_time") @db.VarChar(5)
+  category    ScheduleCategory
+  location    String?          @db.VarChar(240)
+  isCompleted Boolean         @default(false) @map("is_completed")
+  createdAt   DateTime         @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt   DateTime         @updatedAt @map("updated_at") @db.Timestamptz(3)
+  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, date, startTime])
+  @@map("schedule_items")
+}
+
+model InspirationImage {
+  id          String   @id @default(uuid()) @db.Uuid
+  userId      String   @map("user_id") @db.Uuid
+  imageData   String   @map("image_data") @db.Text
+  title       String?  @db.VarChar(200)
+  caption     String?  @db.VarChar(500)
+  category    String?  @db.VarChar(100)
+  note        String?  @db.Text
+  pinned      Boolean  @default(false)
+  position    Int      @default(0)
+  width       Int?
+  height      Int?
+  aspectRatio Float?   @map("aspect_ratio")
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt   DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, pinned, position])
+  @@map("inspiration_images")
+}
